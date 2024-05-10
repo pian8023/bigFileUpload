@@ -2,30 +2,28 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
+  "main": "src/app.ts",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev nodemon -e ts --exec ts-node app.ts",
-    "build": "tsc && node ./dist/index.js",
+    "dev": "node -r sucrase/register src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cross-env": "^7.0.3",
+    "fs-extra": "^11.2.0",
     "koa": "^2.15.3",
     "koa-body": "^6.0.1",
     "koa-bodyparser": "^4.4.1",
-    "koa-json": "^2.0.2",
-    "koa-router": "^12.0.1",
-    "nodemon": "^3.1.0"
+    "koa-logger": "^3.2.1",
+    "koa-router": "^12.0.1"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
     "@types/koa": "^2.15.0",
     "@types/koa-bodyparser": "^4.3.12",
-    "@types/koa-json": "^2.0.23",
+    "@types/koa-logger": "^3.1.5",
     "@types/koa-router": "^7.4.8",
-    "@types/node": "^20.12.7"
+    "sucrase": "^3.35.0"
   }
 }

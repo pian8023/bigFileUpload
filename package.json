@@ -12,10 +12,13 @@
     "prettier": "prettier --write \"./**/*.{html,vue,ts,js,json,md}\""
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "element-plus": "^2.7.1",
     "pinia": "^2.1.7",
+    "prettysize": "^2.0.0",
+    "spark-md5": "^3.0.2",
     "unplugin-vue-setup-extend-plus": "^1.0.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2"
@@ -28,6 +31,8 @@
     "eslint-plugin-vue": "^9.25.0",
     "globals": "^15.0.0",
     "husky": "^9.0.11",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "typescript": "^5.2.2",

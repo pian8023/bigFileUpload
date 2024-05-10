@@ -4,6 +4,7 @@ const axiosInstance: AxiosInstance = axios.create({
   baseURL: '/api',
   timeout: 10000,
 })
+
 // 添加请求拦截器
 axiosInstance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
