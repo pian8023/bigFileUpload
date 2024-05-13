@@ -1,6 +1,6 @@
 import type { Context } from 'koa'
 import path from 'path'
-import { createReadStream, createWriteStream, readdirSync, unlinkSync, rmdirSync } from 'fs-extra'
+import { createReadStream, createWriteStream, readdirSync, unlinkSync, rmdirSync, rm } from 'fs-extra'
 
 // 文件上传目录
 const UPLOAD_DIR = path.resolve(__dirname, '../../node_modules/.cache')
@@ -33,7 +33,8 @@ async function mergeFileChunk(filePath, chunkDir, size) {
       )
     )
   )
-  rmdirSync(chunkDir, { recursive: true }) // 合并后删除保存切片的目录
+  // rmdirSync(chunkDir, { recursive: true }) // 合并后删除保存切片的目录
+  await rm(chunkDir, { recursive: true }) // 合并后删除保存切片的目录
 }
 
 const mergeController = async (ctx: Context) => {

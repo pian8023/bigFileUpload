@@ -49,3 +49,10 @@ export const mergeChunks = async (params) => {
   const res = await axiosInstance.post('/merge', params)
   return res.data.data
 }
+
+export const deleteFile = async (params) => {
+  const res = await axiosInstance.delete('/delete', {
+    params,
+  })
+  return res.data.data
+}

@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 const useFileStore = defineStore('file', {
   state: () => {
     return {
-      name: '上传文件',
+      name: '大文件上传',
     }
   },
 })

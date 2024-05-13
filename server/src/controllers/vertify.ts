@@ -18,10 +18,10 @@ const vertifyController = (ctx: Context) => {
     }
   } else {
     const chunkDir = path.resolve(UPLOAD_DIR, `${fileHash}-chunks`)
-    const uploadedChunks = existsSync(chunkDir) ? readdirSync(chunkDir) : []
+    const uploadedList = existsSync(chunkDir) ? readdirSync(chunkDir) : []
     ctx.body = {
       code: 200,
-      data: { isExist: false, uploadedChunks },
+      data: { isExist: false, uploadedList },
     }
   }
 }
