@@ -8,7 +8,7 @@ import deleteController from '../controllers/delete'
 const router = new Router()
 router.prefix('/api')
 
-router.get('/', (ctx, next) => {
+router.get('/', (ctx) => {
   ctx.body = 'Hello, Koa with TypeScript!'
 })
 

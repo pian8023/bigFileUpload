@@ -6,6 +6,8 @@ declare module '*.vue' {
   export default component
 }
 
+declare module 'prettysize'
+
 
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string;

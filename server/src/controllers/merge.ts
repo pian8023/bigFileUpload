@@ -1,9 +1,7 @@
 import type { Context } from 'koa'
 import path from 'path'
-import { createReadStream, createWriteStream, readdirSync, unlinkSync, rmdirSync, rm } from 'fs-extra'
-
-// 文件上传目录
-const UPLOAD_DIR = path.resolve(__dirname, '../../node_modules/.cache')
+import { createReadStream, createWriteStream, readdirSync, unlinkSync, rm } from 'fs-extra'
+import { UPLOAD_DIR } from '../const'
 
 const pipeStream = (path, writeStream) =>
   new Promise((resolve) => {

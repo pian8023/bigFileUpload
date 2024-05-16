@@ -3,9 +3,9 @@
     <el-upload
       class="upload-demo"
       drag
-      multiple
-      :limit="3"
       :auto-upload="false"
+      :multiple="false"
+      :limit="1"
       :file-list="fileList"
       :on-exceed="handleExceed"
       :on-change="uploadChange"
@@ -13,9 +13,9 @@
       <el-icon class="el-icon--upload"><upload-filled /></el-icon>
       <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
 
-      <template #tip>
+      <!-- <template #tip>
         <div class="el-upload__tip">limit 3 file, new file will cover the old file</div>
-      </template>
+      </template> -->
     </el-upload>
 
     <el-button type="primary" @click="handleUploadFile"> 上传 </el-button>
@@ -39,10 +39,10 @@
 
       <el-table-column prop="operate" label="操作" width="120">
         <template #default="scope">
-          <el-icon class="el-icon" @click.stop="handleSingleUpload(scope.row)">
+          <!-- <el-icon class="el-icon" @click.stop="handleSingleUpload(scope.row)">
             <Upload />
           </el-icon>
-          <el-icon class="el-icon" v-if="scope.row.percentage && scope.row.percentage !== 100"><VideoPause /></el-icon>
+          <el-icon class="el-icon" v-if="scope.row.percentage && scope.row.percentage !== 100"><VideoPause /></el-icon> -->
           <el-icon class="el-icon" @click.stop="handleDelete(scope.row)"><Delete /></el-icon>
         </template>
       </el-table-column>
@@ -53,12 +53,13 @@
 <script setup lang="ts" name="Home">
 import { ref, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import type { UploadProps, UploadFile, UploadFiles } from 'element-plus'
+import type { UploadProps } from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
 import { CHUNK_SIZE } from '@/const'
 import { createFileChunk, calculateHash } from '@/utils/file'
 import { verifyFile, uploadChunks, mergeChunks, deleteFile } from '@/utils/api'
 import prettsize from 'prettysize'
+import JSZip from 'jszip'
 
 const fileList = ref([])
 const fileHash = ref('')
@@ -79,14 +80,14 @@ const uploadPercentage = computed(() => {
   return Math.floor(uploadedSize / currentFile.value.size)
 })
 
-const uploadChange = (file: UploadFile, files: UploadFiles) => {
+const uploadChange = (file, files) => {
   console.log('file, files: ', file, files)
+  resetData()
   currentFile.value = file
   fileList.value = files
 }
 
 watch(uploadPercentage, async (val) => {
-  console.log('val: ', val)
   if (val === 100) {
     await mergeChunks({
       fileName: currentFile.value.name,
@@ -107,6 +108,18 @@ const handleUploadFile = async () => {
     ElMessage.warning('请选择文件')
     return
   }
+
+  resetData()
+
+  /*   const zip = new JSZip()
+  zip.file(currentFile.value.name, currentFile.value, { binary: true })
+  const zipBlob = await zip.generateAsync({
+    type: 'blob',
+    compression: 'DEFLATE',
+    compressionOptions: {
+      level: 5,
+    },
+  }) */
 
   // 分片
   const chunkList = createFileChunk(currentFile.value.raw)
@@ -288,7 +301,6 @@ const handleDelete = async (file) => {
 const handleSingleUpload = async (file) => {
   const chunkList = createFileChunk(file.raw)
   const hashValue = await calculateHash(chunkList)
-  console.log('hashValue: ', hashValue)
   const { isExist, uploadedList } = await verifyFile({ fileHash: hashValue, fileName: file.name })
   if (isExist) {
     ElMessage.success('文件已存在，秒传成功')
@@ -319,6 +331,12 @@ const handleSingleUpload = async (file) => {
       chunkSize: CHUNK_SIZE,
     })
   }
+}
+
+const resetData = () => {
+  fileChunkList.value = []
+  unUploadChunks.value = []
+  fileHash.value = ''
 }
 </script>
 

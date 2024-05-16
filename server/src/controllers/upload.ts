@@ -1,9 +1,7 @@
 import type { Context } from 'koa'
 import path from 'path'
 import { existsSync, mkdirSync, moveSync } from 'fs-extra'
-
-// 文件上传目录
-const UPLOAD_DIR = path.resolve(__dirname, '../../node_modules/.cache')
+import { UPLOAD_DIR } from '../const'
 
 const fileUploadController = (ctx: Context) => {
   const { fileHash, chunkHash } = ctx.request.body

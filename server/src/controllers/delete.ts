@@ -1,9 +1,7 @@
 import type { Context } from 'koa'
 import path from 'path'
-import { existsSync, readdirSync, unlinkSync } from 'fs-extra'
-
-// 文件上传目录
-const UPLOAD_DIR = path.resolve(__dirname, '../../node_modules/.cache')
+import { existsSync, unlinkSync } from 'fs-extra'
+import { UPLOAD_DIR } from '../const'
 
 const deleteController = (ctx: Context) => {
   const { fileName, fileHash } = ctx.request.query
