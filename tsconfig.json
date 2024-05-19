@@ -28,6 +28,7 @@
     },
     "types": ["element-plus/global"]
   },
+  // 还有 tsx？
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "ts-node": {

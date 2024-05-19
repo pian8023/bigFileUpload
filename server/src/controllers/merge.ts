@@ -4,6 +4,7 @@ import { createReadStream, createWriteStream, readdirSync, unlinkSync, rm } from
 import { UPLOAD_DIR } from '../const'
 
 const pipeStream = (path, writeStream) =>
+  // 其他同学都应该来看看这个！用 stream 做文件合并
   new Promise((resolve) => {
     // 创建可读流
     const readStream = createReadStream(path)
@@ -15,6 +16,7 @@ const pipeStream = (path, writeStream) =>
     readStream.pipe(writeStream)
   })
 
+  // 怎么感觉跟样例项目的相似度也很高啊。。。
 async function mergeFileChunk(filePath, chunkDir, size) {
   // 读取所有切片
   const chunkPaths = readdirSync(chunkDir)
