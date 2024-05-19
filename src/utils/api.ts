@@ -24,6 +24,7 @@ export interface ApiResult<T> {
 //   return response.data
 // }
 
+// 类型呢？
 export const verifyFile = async (params) => {
   const res = await axiosInstance.get('/vertify', {
     params,

@@ -1,3 +1,4 @@
+<!-- 给你加个越苏吧，这个文件的代码行数不要超过 100 -->
 <template>
   <div class="container">
     <el-upload
@@ -25,6 +26,7 @@
   </div>
 
   <div v-show="fileList.length">
+    <!-- 这块代码建议拆出去，作为独立组件 -->
     <h3>上传总进度</h3>
     <el-progress :percentage="uploadPercentage" style="margin-bottom: 20px"></el-progress>
 
@@ -59,8 +61,10 @@ import { CHUNK_SIZE } from '@/const'
 import { createFileChunk, calculateHash } from '@/utils/file'
 import { verifyFile, uploadChunks, mergeChunks, deleteFile } from '@/utils/api'
 import prettsize from 'prettysize'
+// 这个包并没有用到啊
 import JSZip from 'jszip'
 
+// 状态太多了，拆
 const fileList = ref([])
 const fileHash = ref('')
 const isPaused = ref(false)
@@ -71,6 +75,7 @@ const unUploadChunks = ref([]) // 未上传的切片
 let controller: AbortController | null = null
 
 const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
+  // 既然限制了上传文件数量，对超限的文件应该在前端进行拦截，不生成对应的 file 对象，避免上传操作
   ElMessage.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + uploadFiles.length} totally`)
 }
 
@@ -82,6 +87,7 @@ const uploadPercentage = computed(() => {
 
 const uploadChange = (file, files) => {
   console.log('file, files: ', file, files)
+  // 这可能导致正在上传的文件丢失进度把？如果允许多文件上传，这里需要优化
   resetData()
   currentFile.value = file
   fileList.value = files
@@ -103,6 +109,7 @@ const getProgress = (item: { percentage: number }) => {
   }
 }
 
+// 这段逻辑很啰嗦，抽出去
 const handleUploadFile = async () => {
   if (!fileList.value.length) {
     ElMessage.warning('请选择文件')
@@ -171,6 +178,7 @@ const handleUploadFile = async () => {
 
 // 控制请求发送以及上传错误处理
 const sendRequest = (chunks, max = 6) => {
+  // 并发控制是很独立的逻辑，抽出去
   return new Promise((resolve, reject) => {
     let counter = 0 // 发送成功的请求数
     const retryArr: never[] = []
@@ -201,6 +209,7 @@ const sendRequest = (chunks, max = 6) => {
 
           requestArr.push(
             uploadChunks(chunks[idx], getProgress(chunks[idx]), controller.signal)
+            // 用 async-await
               .then(() => {
                 chunks[idx].status = 3
                 counter++
@@ -240,6 +249,7 @@ const sendRequest = (chunks, max = 6) => {
 }
 
 // 控制请求并发
+// 这个函数并没有用到
 const concurRequest = (taskPool: Array<() => Promise<Response>>, max: number): Promise<Array<Response | unknown>> => {
   return new Promise((resolve) => {
     if (taskPool.length === 0) {
@@ -298,6 +308,7 @@ const handleDelete = async (file) => {
   await deleteFile({ fileHash: hashValue, fileName: file.name })
 }
 
+// 这个函数也没用到
 const handleSingleUpload = async (file) => {
   const chunkList = createFileChunk(file.raw)
   const hashValue = await calculateHash(chunkList)
@@ -333,6 +344,7 @@ const handleSingleUpload = async (file) => {
   }
 }
 
+// 频繁 resetdata 了，而且你这个是支持多文件并行上传的，reset 应该有问题
 const resetData = () => {
   fileChunkList.value = []
   unUploadChunks.value = []
