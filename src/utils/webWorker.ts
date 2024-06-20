@@ -1,6 +1,6 @@
 import SparkMD5 from 'spark-md5'
 
-const readFile = (file) => {
+const readFile = (file: File) => {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader()
     fileReader.readAsArrayBuffer(file)

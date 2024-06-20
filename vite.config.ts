@@ -1,12 +1,11 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import * as path from 'path'
+import path from 'path'
 import vueSetupExtend from 'unplugin-vue-setup-extend-plus/vite'
 import eslintPlugin from 'vite-plugin-eslint'
 import fs from 'fs'
 import dotenv, { DotenvParseOutput } from 'dotenv'
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // 定义文件前缀
   const envFilePrefix: string = '.env.'
@@ -20,7 +19,6 @@ export default defineConfig(({ mode }) => {
 
   return {
     resolve: {
-      //设置别名
       alias: {
         '@': path.resolve(__dirname, 'src'),
       },
@@ -30,7 +28,7 @@ export default defineConfig(({ mode }) => {
       vueSetupExtend({
         enableAutoExpose: true,
       }),
-      // eslintPlugin(),
+      eslintPlugin(),
     ],
     server: {
       hmr: true,

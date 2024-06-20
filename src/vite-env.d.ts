@@ -2,14 +2,10 @@
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
-  const component: DefineComponent<{}, {}, any>
+  const component: DefineComponent<object, object, any>
   export default component
 }
 
 declare module 'prettysize'
-
-
-interface ImportMetaEnv {
-  readonly VITE_APP_TITLE: string;
-  // 更多环境变量...
-}
+declare module 'spark-md5'
+declare module 'p-limit'
