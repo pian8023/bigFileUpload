@@ -24,6 +24,8 @@ async function mergeFileChunk(filePath: string, chunkDir: string, size: number) 
     chunkPaths.map((chunkPath, index) =>
       pipeStream(
         path.resolve(chunkDir, chunkPath),
+        // 每次都要 createWriteStream ？应该不需要吧？
+        // 理论上只需要建立一个，在 promise.all 中复用就好了
         // 创建可写流
         createWriteStream(filePath, {
           start: index * size,

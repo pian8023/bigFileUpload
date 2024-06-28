@@ -26,6 +26,8 @@
 import prettsize from 'prettysize'
 import { ElMessage } from 'element-plus'
 import type { UploadFile, UploadFiles } from 'element-plus'
+// 应该是：
+// import { type ChunkItem } from '@/types'
 import { ChunkItem } from '@/types'
 import { CHUNK_SIZE } from '@/const'
 import { createFileChunk, calculateHash, concurRequest, getProgress } from '@/utils/file'
@@ -46,6 +48,7 @@ const handleUpload = async (file: UploadFile) => {
   const chunkList = createFileChunk(file)
 
   // 计算hash
+  // 用 file name 来记录 hash，不太靠谱吧？
   const dbHash: any = await indexedDB.getItem('fileHash', file.name)
   let fileHash = ''
   if (dbHash) {
@@ -111,14 +114,17 @@ const handlePause = (file: UploadFile) => {
   controllersMap.forEach((controller) => controller.abort())
 }
 
+// 这函数名字是 get，但内容确实有副作用的
 const getPercentage = (file: UploadFile, progress: number) => {
   file.percentage = progress
 }
 
 const handleDelete = async (file: UploadFile) => {
+  // 假如吧每一行都拆成单独组件，这里就不需要做 findIndex 操作了
   const index = props.fileList.findIndex((item) => item.uid === file.uid)
   props.fileList.splice(index, 1)
 
+  // 难怪上面要缓存
   const chunkList = createFileChunk(file)
   const hashValue = await calculateHash(chunkList)
 
