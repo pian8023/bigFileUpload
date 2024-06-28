@@ -4,10 +4,12 @@
     <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
 
     <template #tip>
+      <!-- 这中英混搭的 -->
       <div class="el-upload__tip">大文件上传：limit 3 file</div>
     </template>
   </el-upload>
 
+  <!-- 组件结构拆分的好 -->
   <FileList :fileList="fileList" v-show="fileList.length"> </FileList>
 </template>
 

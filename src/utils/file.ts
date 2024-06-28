@@ -33,6 +33,8 @@ export const calculateHash = (fileChunkList: Blob[]): Promise<string> => {
   })
 }
 
+// emmm，不太理解为什么要把这部分代码单独拆到 utils
+// 看起来挺简单的
 export const getProgress = (item: ChunkItem) => {
   return (progressEvent: AxiosProgressEvent) => {
     if (progressEvent.total === undefined) {
@@ -43,6 +45,7 @@ export const getProgress = (item: ChunkItem) => {
 }
 
 // 并发控制
+// 整体比较中规中矩，但也找不到明显的优点
 export const concurRequest = (
   taskPool: Array<() => Promise<void>>,
   onTick: (progress: number) => void,
@@ -71,6 +74,7 @@ export const concurRequest = (
       } else if (failList.length) {
         // 如果有失败的任务且没有达到并发限制，则重试失败的任务
         const { task, retries } = failList.shift()!
+        // 这个 3 应该作为参数从外部传入
         if (retries < 3) {
           // 如果重试次数没有超过限制，则重新放入 taskPool
           taskPool.push(() =>

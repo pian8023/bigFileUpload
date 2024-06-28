@@ -13,6 +13,7 @@ const deleteController = (ctx: Context) => {
   const chunkDir = path.resolve(UPLOAD_DIR, `${fileHash}-chunks`)
 
   if (existsSync(filePath) || existsSync(chunkDir)) {
+    // 这个 existsSync(filePath) 判断执行了两次了，倒是没太大必要
     if (existsSync(filePath)) {
       unlinkSync(filePath)
     } else {
